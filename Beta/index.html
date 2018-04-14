@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<!--  This site was created in Webflow. http://www.webflow.com  -->
+<!--  Last Published: Tue Jan 30 2018 04:19:00 GMT+0000 (UTC)  -->
+<html data-wf-page="5a60228232637c0001f7c153" data-wf-site="5a60228232637c0001f7c152">
+    <head>
+      
+        <meta charset="utf-8" />
+        <title>Concluder Web App</title>
+        <meta content="width=device-width, initial-scale=1" name="viewport" />
+
+        <link href="css/normalize.css" rel="stylesheet" type="text/css" />
+        <link href="css/webflow.css" rel="stylesheet" type="text/css" />
+        <link href="css/concluder-ui.webflow.css" rel="stylesheet" type="text/css" />
+		<link href="css/treant.css" rel="stylesheet" type="text/css" />
+		<link href="css/tables.css" rel="stylesheet" type="text/css" />
+        <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js" type="text/javascript"></script>
+
+       
+        <link href="https://daks2k3a4ib2z.cloudfront.net/img/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+        <link href="https://daks2k3a4ib2z.cloudfront.net/img/webclip.png" rel="apple-touch-icon" />
+    </head>
+    <body class="body">
+    <div  id="panel" class="panel w-row">
+        <div class="panel-container w-col w-col-6">
+            <div class="buttons-background">
+                <div class="buttons-container">
+                    <div id="treeIcon" class="menu-btn">
+                        <img src="images/tree-structure.svg" class="menu-icon" />
+                    </div>
+                    <div id="relationIcon" class="menu-btn">
+                        <img src="images/relation.svg" class="menu-icon" />
+                    </div>
+                    <div id="analyzeIcon" class="menu-btn">
+                        <img src="images/analyze.svg" class="menu-icon" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel-hand-container w-col w-col-6">
+            <div id="panelHand" class="panel-hand">
+                <div class="hand-art"></div>
+                <div class="hand-art"></div>
+            </div>
+        </div>
+    </div> 
+    <div  id="editNodeScreen" class="edit-tree-screen">
+        <div class="screen-title">Edit Tree</div>
+		<div id="editTreeChart" style="height: 90%; width: 100%; overflow: hidden;"></div>
+        <div class="bottom-buttons">
+            <div  id="editNodeBtn" class="edit-buttons">
+                <img src="images/editBtn.svg" class="button-image" />
+            </div>
+            <div id="deleteNodeBtn" class="edit-buttons">
+                <img src="images/deleteBtn.svg" class="button-image" />
+            </div>
+            <div  id="addNodeBtn" class="edit-buttons">
+                <img src="images/addBtn.svg" class="button-image" />
+            </div>
+        </div>
+        <div id="addNodeBox" class="msg-box-bg">
+            <div class="input-msg-box">
+                <div class="msg-box-title">-Add node-</div>
+                <div class="msg-box-input-container">
+                    <div class="w-form">
+						<input type="text" class="input-in-msg w-input" placeholder="Node Name" id="addNodeNameInput" />
+                    </div>
+                    <div id="addNodeBtnOk" class="msg-button-apply w-button">Add</div>
+                    <div id="addNodeBtnCancel" class="msg-button-cancel w-button">Cancel</div>
+                </div>
+            </div>
+        </div>
+        <div id="editNodeBox" class="msg-box-bg">
+            <div class="input-msg-box">
+                <div class="msg-box-title">-Edit Node-</div>
+                <div class="msg-box-input-container">
+                    <div class="w-form">
+						<input type="text" class="input-in-msg w-input" placeholder="Node Name" id="editNodeInput" />
+                    </div>
+                    <div id="editNodeOk" class="msg-button-apply w-button">Apply</div>
+                    <div id="editNodeCancel" class="msg-button-cancel w-button">Cancel</div>
+                </div>
+            </div>
+        </div>
+        <div id="deleteNodeBox" class="msg-box-bg">
+            <div class="input-msg-box">
+                <div class="msg-box-title">-Delete Node-</div>
+                <div class="msg-box-text">Are you sure?</div>
+                <div class="msg-box-input-container">
+                    <div id="deleteNodeYes" class="msg-button-apply w-button">Yes</div>
+                    <div id="deleteNodeCancel" class="msg-button-cancel w-button">Cancel</div>
+                </div>
+            </div>
+        </div>
+    </div>
+	
+	<div id="msgBox" class="msg-box-bg">
+		<div class="input-msg-box">
+			<div id="msgTitle" class="msg-box-title"></div>
+			<div class="msg-box-input-container">
+				<div class="w-form">
+					<div style="height: 15px;"></div>
+					<p id="msgDiv"></p>
+				</div>
+				<div id="msgBoxOk" class="msg-button-apply w-button">Ok</div>
+
+			</div>
+		</div>
+	</div>
+	
+	<div id="relationScreen" class="relations-screen">
+		<div class="relation-ui">
+			<div class="screen-title">Relations</div>
+			<div id="relateTreeChart" class="tree-div"></div>
+			<div id="relationTab" class="relations-right-tab">
+				<div class="nav-header">
+					<div class="tab-title">Nodes Relations</div>
+					<div id="relationTabCloseBtn" class="close-nav-btn">X</div>
+				</div>
+				
+				<!--RELATION-->
+				
+				<div id="relationsDiv" class="relations-div">
+					<!--
+					<div class="parents">
+						<div class="parent-name-saved-relation">Root</div>
+						<div class="node-relation-div">
+							<div class="row w-row">
+								<div class="relation-buttons w-col w-col-2 w-col-small-2 w-col-tiny-2">
+									<img id="relDeleteBtn" src="images/deleteBtn.svg" class="relation-buttons-icon-delete">
+									<img id="relEditBtn" src="images/editBtn.svg" class="relation-buttons-icon-edit">
+								</div>
+								<div class="relation w-col w-col-10 w-col-small-10 w-col-tiny-10">
+									<div class="w-row">
+										<div class="node-to-relate w-col w-col-4 w-col-small-4 w-col-tiny-4">
+											<div class="node-text">A</div>
+										</div>
+										<div class="column w-col w-col-4 w-col-small-4 w-col-tiny-4">
+											<img src="images/arrow.svg" width="58" class="arrow">
+											<div class="relation-input">1.5X</div>
+										</div>
+										<div class="node-to-relate w-col w-col-4 w-col-small-4 w-col-tiny-4">
+											<div class="node-text">B</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					-->
+				</div>
+				
+				
+			</div>
+		</div>
+		<div class="bottom-buttons">
+			<div id="relationTabOpenBtn" class="relation-nav-button">
+				<img src="images/relation.svg" class="relation-icon-nav">
+			</div>
+		</div>
+		<div id="relationWizard" class="relation-wizard">
+			<div class="relation-wizard-bg">
+				<div class="relation-wizard-flex">
+					<div class="relation-wizard-dialog">
+						<div class="msg-box-title">Relation</div>
+						<h1 class="relation-dialog-heading">Which is bigger?</h1>
+						<div class="dialog-user-selection">
+							<div id="selectedA" class="dialog-node-div" style="cursor:pointer;"></div>
+							<div class="relation-dialog-text">OR</div>
+							<div id="selectedB" class="dialog-node-div" style="cursor:pointer;"></div>
+						</div>
+						<h1 class="relation-dialog-heading">By how much?</h1>
+						<input id="relationValueInput" type="text"/>
+						<div id="relationApplyBtn" class="msg-button-apply w-button">Apply</div>
+						<div id="relationCancelBtn" class="msg-button-cancel w-button">Cancel</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+	</div>
+	<div id="analyzeScreen" class="analyzing-screen">
+		<div class="screen-title">Analyze</div>
+		<div id="analyzeTreeChart" class="tree-div"></div>
+		<div id="matrixWizard" class="matrix-wizard-bg">
+			<div class="matrix-wizard">
+				<div class="matrix-wizard-dialog w-clearfix">
+					<div id="mstrixWizardCloseBtn" class="matrix-wizard-close-btn">X</div>
+					<div id="matrixTitle" class="matrix-wizard-title">Matrix (Root)</div>
+					<div class="matrix-view-bg">
+						<div id="matrixView" class="matrix-view"></div>
+						
+						<div class="bottom-buttons">
+							<div id="analyzePanelBtn" class="relation-nav-button">
+								<img src="images/analyze.svg" class="relation-icon-nav">
+							</div>
+						</div>
+						<div id="analyzePanel" class="analyze-buttons-tab">
+							<div class="nav-header">
+								<div class="tab-title">Analyzing  Panel</div>
+								<div id="analyzePanelCloseBtn" class="close-nav-btn">X</div>
+							</div>
+							<div class="panel-section-title">General</div>
+							<div id="inconsElementBtn" class="analyze-button">Most Inconstant Element</div>
+							<div id="reduceBtn" class="analyze-button">Reduce Inconsistency</div>
+							<div class="panel-section-title">Traids</div>
+							<img id="showTraidsBtn" src="images/visible-opened-eye-interface-option.png" class="traids-control-icon-show">
+							<img id="hideTraidsBtn" src="images/invisible.png" class="traids-control-icon-hide">
+							<img id="nextTraidBtn" src="images/right-arrow.png" class="traids-control-icon-next">
+							<div id="inconsTraidBtn" class="analyze-button">Most Inconstant Traid</div>
+						</div>
+					</div>
+					<div id="matrixStatistics"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--<div id="matrixTestDiv"></div>-->
+	
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js" type="text/javascript"></script> 
+    <script src="Tools/jquery.easing.1.3.js" type="text/javascript"></script> 
+    <script src="Tools/treant-js-master/vendor/raphael.js" type="text/javascript"></script> 
+    <script src="Tools/treant-js-master/Treant.js" type="text/javascript"></script> 
+    <script src="js/nodes.js" type="text/javascript"></script>
+	<script src="js/matrix.js" type="text/javascript"></script>
+    <script src="js/relation.js" type="text/javascript"></script> 
+    <script src="js/analyze.js" type="text/javascript"></script> 
+    <script src="js/control.js" type="text/javascript"></script> 
+    <script src="js/index.js" type="text/javascript"></script> 
+
+	</body>
+</html>
