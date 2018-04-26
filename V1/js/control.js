@@ -91,10 +91,23 @@ addNodeBtn.click(function(){
 addNodeBtnOk.click(function(){
 	//remove selected node and all sub-tree under it from Relation Tab div and from relationsList[] (matrix is edited through node.js 'Add' function after this)
 	deleteSubtreeRelations(selectedNode); // always empty relations when adding nodes
-	value = addNodeNameInput.val();
-	addNode(map[selectedNode], value);
-	$('#'+selectedNode).css({'background-color': '#2fb1d1', 'color': 'white'});
-	addNodeBox.hide(250);
+	var nodeName = addNodeNameInput.val();
+	//Make sure no siblings with the same name exists
+	var nodeNameOk = true;
+	map[selectedNode].children.forEach(function(child){
+		if(child.text.name == nodeName){
+			nodeNameOk = false;
+		}
+	});
+	if(nodeNameOk == true){
+		addNode(map[selectedNode], nodeName);
+		$('#'+selectedNode).css({'background-color': '#2fb1d1', 'color': 'white'});
+		addNodeBox.hide(250);
+	}else{
+		message('Error!','A sibling with the same name already exists');
+	}
+	
+	
 });
 
 addNodeBtnCancel.click(function(){
