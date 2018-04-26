@@ -463,7 +463,7 @@ maxInconsTraidBtn.click(function(){
 	removeHighlights(map[selectedNode].matrix);
 	var maxTraid = findMaxIncons(inconsList);
 	showTraid(maxTraid);
-	matrixStatistics.text('Inconsistancy Value = ' + maxTraid.incons);
+	matrixStatistics.text('inconsistency Value = ' + maxTraid.incons);
 });
 
 inconsElementBtn.click(function(){
@@ -478,14 +478,14 @@ reduceBtn.click(function(){
 	autoReduce();
 	printMatrix(map[selectedNode], '#matrixView');
 	matrixEvalWeight(selectedNode);
-	calcInconsistancy(map[selectedNode].matrix);
+	calcInconsistency(map[selectedNode].matrix);
 	console.log("Backup Matrix: " + backupMatrix);
 	matrixStatistics.text("");
 });
 
 //bring back the backed up matrix
 //re-evaluate weights
-//re-calculate inconsistancy
+//re-calculate inconsistency
 //print the matrix
 restoreMatrixBtn.click(function(){
 	// restore the matrix from backupMatrix
@@ -493,7 +493,7 @@ restoreMatrixBtn.click(function(){
 		map[selectedNode].matrix[i] = backupMatrix[i].slice();
 	}
 	matrixEvalWeight(selectedNode);
-	calcInconsistancy(map[selectedNode].matrix);
+	calcInconsistency(map[selectedNode].matrix);
 	printMatrix(map[selectedNode], '#matrixView');
 	matrixStatistics.text("");
 	
@@ -523,8 +523,8 @@ reduceTraidBtn.click(function(){
 	printMatrix(map[selectedNode], '#matrixView');
 	showTraid(inconsList[traidTurn]);
 	matrixEvalWeight(selectedNode);
-	calcInconsistancy(map[selectedNode].matrix); // re-calculate incosistancy
-	matrixStatistics.text('Inconsistancy Value = ' + inconsList[traidTurn].incons);
+	calcInconsistency(map[selectedNode].matrix); // re-calculate incosistancy
+	matrixStatistics.text('inconsistency Value = ' + inconsList[traidTurn].incons);
 });
 
 /*
@@ -601,10 +601,10 @@ function cellClick(cellId){
 			}
 			
 			matrixEvalWeight(selectedNode);
-			calcInconsistancy(map[selectedNode].matrix);
+			calcInconsistency(map[selectedNode].matrix);
 			
 			printMatrix(map[selectedNode], '#matrixView');
-			calcInconsistancy(map[selectedNode].matrix);
+			calcInconsistency(map[selectedNode].matrix);
 			
 			drawTree("#analyzeTreeChart", Tree);
 			showTraid(inconsList[traidTurn]);

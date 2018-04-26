@@ -1,28 +1,5 @@
 var matrixTestDiv = $('#matrixTestDiv');
 
-/*
-function printMatrix(matrix, div){
-	var table = "";
-	
-	for(i = 0 ; i < matrix.length; i++){
-		
-		table += "<tr>";
-		for(j = 0 ; j < matrix.length; j++){
-				if(i != j){
-					//input id = cell_ij_input
-					table += "<td id='cell_"+i+j+"' data-i='"+i+"' data-j='"+j+"' onClick='cellClick(this.id)' ><input id='cell_"+i+j+"_input' class='cellInput' type='text' value='"+matrix[i][j]+"' readonly></td>";
-				}else{
-					table += "<td>"+matrix[i][j]+"</td>";
-				}
-				
-		}
-		table += "</tr>";
-	}
-	
-	$(div).text('');
-	$(div).append(table);
-}
-*/
 
 function printMatrix(node, targetDiv){
 	var matrix = node.matrix;
@@ -84,12 +61,17 @@ function printMatrix(node, targetDiv){
 	targetDiv.text('');
 	targetDiv.append(table);
 }
-
+/*
+	add a relation in a matrix
+*/
 function matrixRelation(matrix,i,j,value){
 	matrix[i][j] = value;
 	matrix[j][i] = (1/value).toFixed(2);
 }
 
+/*
+	Calculate the sum of a matrix
+*/
 function matrixSum(matrix){
 	var sum = 0;
 	for(var i = 0 ; i < matrix.length; i++){
@@ -101,6 +83,10 @@ function matrixSum(matrix){
 	return sum;
 }
 
+
+/*
+	Distribute wights among elements based on their relations
+*/
 function matrixEvalWeight(id){
 	
 	var sum = matrixSum(map[id].matrix);
@@ -134,6 +120,8 @@ function matrixDeleteElement(id){
 	console.log('Matrix OP: node ' + map[parent].HTMLid + " has a matrix of "+map[parent].matrix.length+" X "+map[parent].matrix.length);
 	
 }
+
+
 /*
 	getNodeIndex is used to get the index of a node under a parent
 	very helpful to target an element by index in a matrix

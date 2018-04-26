@@ -40,6 +40,9 @@ function deleteSubtreeRelations(nodeId){
 	console.log(relationsList);
 }
 
+/*
+	remove a relation from the html div and from relationList
+*/
 function deleteRelatedRelation(nodeId){
 	console.log("--- deleteRelatedRelation ---");
 	console.log("relationsList before: ");
@@ -63,8 +66,10 @@ function deleteRelatedRelation(nodeId){
 	console.log("relationsList after");
 	console.log(relationsList);
 }
-
-//relationSelectionFunction used for relation tree intilization
+/*
+	relationSelectionFunction will execute when the user clicks on nodes in the relation screen
+	it will detect first and second selections
+*/
 var relationSelectionFunction = function(){
 	$('.nodeClick').click(function(){
 		if(nodeA == null && nodeB == null){ // this is first selection, need to check if this node has siblings
@@ -85,6 +90,7 @@ var relationSelectionFunction = function(){
 				return;
 			}
 			
+			// Make sure both nodes are under the same parent
 			if(nodeA.parent != nodeB.parent){
 				message("Not the same Parents!","Please select nodes under the same parents.");
 				nodeA = null;
@@ -123,39 +129,31 @@ $.fn.exists = function () {
 }
 
 /*
-	parent, relNodeA, relNodeB
-	are actual nodes, not ids
-	
-	
+	Adds a relation between two nodes
+	variables parent, relNodeA, and relNodeB are actual nodes, not ids
 */
-
 function addRelation(parent, relNodeA, relNodeB, value){
 	// parent ARGUMENT SHOULD BE REMOVED, PARENT CAN BE AQUIRED FROM A NODE ARGUMENT
+	
 	//debug input:
 	console.log("addRelation:nodeA = "+relNodeA);
 	console.log("addRelation:nodeB = "+relNodeB);
-	
-	
 
 	// make sure both nodes are under the same parent
 	relNodeAParent = relNodeA.parent;
-	
 	relNodeBParent = relNodeB.parent;
-	
 	if(relNodeAParent != relNodeBParent){
 		return message("Not the same Parrents!","Please select nodes under the same parents.");
 	}
 	
-	
-	
 	/*
-		if a relation exist, update the existing one.
+		if a relation exist between both nodes A and B, update the existing relation.
 	*/
 	var relNodeA_id = relNodeA.HTMLid;
 	var relNodeB_id = relNodeB.HTMLid;
 	for(var i=0; i<relationsList.length; i++){
 	
-		if(relationsList[i] != undefined){ // might be undefined due to deleting relations
+		if(relationsList[i] != undefined){ // might be undefined due to deleting relations (there might be gaps in relationList)
 			
 			listNodeA_id = relationsList[i].nodeA.HTMLid;
 			listNodeB_id = relationsList[i].nodeB.HTMLid;
@@ -174,14 +172,11 @@ function addRelation(parent, relNodeA, relNodeB, value){
 	/*
 		update matrix
 	*/
-		
-	
 	var i = findIndex(parent, relNodeA);
 	var j = findIndex(parent, relNodeB);
 	
 	matrixRelation(parent.matrix, i, j, value);
 
-	
 	/*
 		add relation div
 	*/
@@ -204,6 +199,7 @@ function addRelation(parent, relNodeA, relNodeB, value){
 		relationsDiv.append(div);	
 	}
 	
+	//evaluate weights
 	matrixEvalWeight(parent.HTMLid);
 	
 	// add to relations list
@@ -250,7 +246,10 @@ function editRelation(relationId, nodeA, nodeB, value){
 }
 
 
-
+/*
+	find an index
+	node is a refrence, not an id
+*/
 function findIndex(parent, node){
 	for(var i = 0; i<parent.children.length; i++){
 		if(parent.children[i].HTMLid == node.HTMLid){
@@ -260,6 +259,7 @@ function findIndex(parent, node){
 	}
 	console.log('index of '+node.HTMLid+' not found! there is ' + parent.children.length + " children for " + parent.HTMLid);
 }
+
 
 function applyRelationsFromMatrix(node){
 	var parent = map[node.parent];

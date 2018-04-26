@@ -52,6 +52,7 @@ var treeConfig = {
     }
 };
 
+
 var Tree = $.extend(true, {}, treeConfig);//a clone of treeConfig
 
 var root = Tree.nodeStructure;
@@ -60,14 +61,23 @@ var map = {
 	'node_root': root
 };
 
-
+/*
+	prints a node's HTMLid in the console.
+	used for debuging.
+*/
 function findNode(id) {
 	console.log(map[id].HTMLid);
 }
 
-//target is an actual node, not ID
+//target is node refrence, not ID
+/*
+	Adds a node under a target node
+	target: node refrence
+	name: string
+*/
 function addNode(target, name){
 	
+	// make sure target is not null, and name is not empty
 	if(target == null || name == ""){
 		console.log("Please select a node and make sure the name is not empty!");
 		console.log(target);
@@ -112,9 +122,9 @@ function addNode(target, name){
 	assembleNode()
 	used with opeining a tree from a file
 	startign from the root of a file, attatch nodes to the tree.
-	parent: is where the node will be assembled (a node object)
-	name: is the nodes name
-	id: is the node id
+	parent: is where the node will be assembled (a node refrence)
+	name: the node name
+	id: the node id
 */
 
 function assembleNode(parent, name, id){
@@ -133,8 +143,8 @@ function assembleNode(parent, name, id){
 	
 	//reconstruct the matrix for the target (target is the parent where the new node is added)
 	for(i = 0 ; i < parent.children.length ; i++){
-		parent.matrix[i] = [];
-		for(j = 0 ; j < parent.children.length ; j++){
+		parent.matrix[i] = []; // make a row in the matrix
+		for(j = 0 ; j < parent.children.length ; j++){ // fill the row with ones
 			parent.matrix[i][j] = 1;
 		}
 	}

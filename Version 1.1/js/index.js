@@ -32,7 +32,7 @@ newfileIcon.click(function(){
 	relationsList = [];
 	relId = 0; // reset relation id counter
 	
-	//show editNodeScreen
+	//show editNodeScreen and reset the relation tab
 	analyzeScreen.hide(250);
 	relationsDiv.html('');
 	relationScreen.hide(250);
