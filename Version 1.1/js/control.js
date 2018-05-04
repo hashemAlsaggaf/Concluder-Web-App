@@ -1,4 +1,6 @@
-
+/*
+	control.js is responsible for all buttons and UI/UX controls
+*/
 
 
 /*------------------------------------------------
@@ -16,19 +18,19 @@ function message(title, msg){
 	msgTitle.text(title);
 	msgBox.show(250);
 }
-//------------------------------------------------
+
 
 
 msgBoxOk.click(function (){
 	msgBox.hide(250);
 });
+//------------------------------------------------
 
 /*
 	loading animation
 	0 = hide
 	1 = show
 */
-
 function loadingAnim(status){
 	switch(status){
 		case 0:
@@ -82,24 +84,26 @@ var addNodeNameInput = $('#addNodeNameInput');
 var addNodeBtnOk = $('#addNodeBtnOk');
 var addNodeBtnCancel = $('#addNodeBtnCancel');
 
-
+/*Add Node Panel button*/
 addNodeBtn.click(function(){
-	addNodeBox.show(250);
-	addNodeNameInput.focus();
+	addNodeBox.show(250); // show "Add Node" box
+	addNodeNameInput.focus(); // switch input focus to input field
 });
 
 addNodeBtnOk.click(function(){
+	//remove all relations under the selected node (remove the relations among the new node's siblings)	
 	//remove selected node and all sub-tree under it from Relation Tab div and from relationsList[] (matrix is edited through node.js 'Add' function after this)
-	deleteSubtreeRelations(selectedNode); // always empty relations when adding nodes
+	deleteSubtreeRelations(selectedNode);
+	
 	var nodeName = addNodeNameInput.val();
 	//Make sure no siblings with the same name exists
-	var nodeNameOk = true;
+	var nodeNameUnique = true;
 	map[selectedNode].children.forEach(function(child){
 		if(child.text.name == nodeName){
-			nodeNameOk = false;
+			nodeNameUnique = false;
 		}
 	});
-	if(nodeNameOk == true){
+	if(nodeNameUnique == true){
 		addNode(map[selectedNode], nodeName);
 		$('#'+selectedNode).css({'background-color': '#2fb1d1', 'color': 'white'});
 		addNodeBox.hide(250);
@@ -110,10 +114,12 @@ addNodeBtnOk.click(function(){
 	
 });
 
+/*Add Node box - Cancel Button*/
 addNodeBtnCancel.click(function(){
 	addNodeBox.hide(250);
 });
 
+/*Add Node box - Listen to the Enter button*/
 addNodeNameInput.keyup(function (e) {
     if(e.which ==13)
 		addNodeBtnOk.click();
@@ -127,14 +133,12 @@ var deleteNodeBox = $('#deleteNodeBox');
 var deleteNodeYes = $('#deleteNodeYes');
 var deleteNodeCancel = $('#deleteNodeCancel');
 
-deleteNodeBox.click(function(){
-	deleteNodeBox.hide(250);
-});
-
+/*Delete Node Panel button*/
 deleteNodeBtn.click(function(){
 	deleteNodeBox.show(250);
 });
 
+/*Delete Node box - "Yes" Button*/
 deleteNodeYes.click(function(){
 	
 	deleteSubtreeRelations(selectedNode); // always empty relations when deleteing nodes
@@ -157,6 +161,7 @@ deleteNodeYes.click(function(){
 	drawTree("#editTreeChart", Tree);
 });
 
+/*Delete Node box - "No" button*/
 deleteNodeCancel.click(function(){
 	deleteNodeBox.hide(250);
 });
@@ -170,14 +175,16 @@ var editNodeInput = $('#editNodeInput');
 var editNodeOk = $('#editNodeOk');
 var editNodeCancel = $('#editNodeCancel');
 
+/*Edit Node Panel button*/
 editNodeBtn.click(function(){
 	editNodeBox.show(250);
 	editNodeInput.focus();
 });
 
+/*Edit Node box - "Ok" Button*/
 editNodeOk.click(function(){
 	value = editNodeInput.val();
-	editNodeName(selectedNode, root, value);
+	editNodeName(selectedNode, value);
 	//restore relationsList and relations tab
 	relationsDiv.html('');
 	function loadRelations(){
@@ -185,7 +192,7 @@ editNodeOk.click(function(){
 		relationsList = [];
 		newRelList.forEach(function(relation){
 			if(relation != null){
-				addRelation(map[relation.parent.HTMLid], map[relation.nodeA.HTMLid], map[relation.nodeB.HTMLid], relation.value);
+				addRelation(map[relation.nodeA.HTMLid], map[relation.nodeB.HTMLid], relation.value);
 				console.log(relation);
 			}
 			
@@ -197,11 +204,13 @@ editNodeOk.click(function(){
 	drawTree("#editTreeChart", Tree);
 });
 
+/*Edit Node box - "Cancel" button*/
 editNodeCancel.click(function(){
 	editNodeBox.hide(250);
 	drawTree("#editTreeChart", Tree);
 });
 
+/*Listen to Enter button*/
 editNodeInput.keyup(function (e){
 	if(e.which == 13)
 		editNodeOk.click();
@@ -216,25 +225,23 @@ var relationTabCloseBtn = $("#relationTabCloseBtn");
 var relationTabOpenBtn = $("#relationTabOpenBtn");
 var relationWizard = $("#relationWizard");
 
-
+/*Relation Tab Open button*/
 relationTabOpenBtn.click(function(){
 	relationTab.show(250);
 });
 
+/*Relation Tab Close button*/
 relationTabCloseBtn.click(function(){
 	relationTab.hide(250);
 });
 
-//selecting
+
+/*SELECTING THE BIGGER ITEM MECHANISM*/
 var nodeA = null;
 var nodeB = null;
-//var selectedA = $('#selectedA'); // moved to relation.js to have nodeA as the bigger by default
-//var selectedB = $('#selectedB'); // moved to relation.js to have nodeA as the bigger by default
 var biggerSelection = null;
 
-
-
-
+/*Item A*/
 selectedA.click(function(){
 	$(this).css({"background-color": "lime"});
 	selectedB.css({"background-color": ""});
@@ -242,6 +249,7 @@ selectedA.click(function(){
 	console.log("Bigger is: " + biggerSelection);
 });
 
+/*item B*/
 selectedB.click(function(){
 	$(this).css({"background-color": "lime"});
 	selectedA.css({"background-color": ""});
@@ -256,6 +264,7 @@ var relationApplyBtn = $('#relationApplyBtn');
 var relationCancelBtn = $('#relationCancelBtn');
 var relationValueInput = $('#relationValueInput');
 
+/*Relation Wizard - "Cancel" button*/
 relationCancelBtn.click(function(){
 	selectedA.css({"background-color": ""});
 	selectedB.css({"background-color": ""});
@@ -263,14 +272,16 @@ relationCancelBtn.click(function(){
 	relationWizard.hide(250);
 });
 
+/*Relation Wizard - "Apply" button*/
 relationApplyBtn.click(function(){
+	// validate input
 	var value = relationValueInput.val();
 	if(isNaN(value) || value <= 0){
 		relationValueInput.val(1);
 		return message('Invalid Input', 'Please make sure you enter a valid number larger than zero.');
 	}
-	var parent = nodeA.parent;
-	addRelation(map[parent], nodeA, nodeB, value);
+	
+	addRelation(nodeA, nodeB, value);
 	nodeA = null;
 	nodeB = null;
 	relationWizard.hide(250);
@@ -286,6 +297,12 @@ var editRelationValueInput = $('#editRelationValueInput');
 var editRelationApplyBtn = $('#editRelationApplyBtn');
 var editRelationCancelBtn = $('#editRelationCancelBtn');
 
+/*
+	This function is triggered from an edit relation button in the Relations Tab
+	Each relation in the relation tab has a unique relationId
+	Input:
+		relationId
+*/
 function editRelationClick(relationId){
 	console.log("relId: " + relationId);
 	selectedRelation = relationId;
@@ -299,6 +316,7 @@ function editRelationClick(relationId){
 	
 }
 
+/*Selecting the bigger node*/
 edit_nodeA_bigger.click(function(){
 	$(this).css({"background-color": "lime"});
 	edit_nodeB_bigger.css({"background-color": ""});
@@ -316,6 +334,7 @@ edit_nodeB_bigger.click(function(){
 	console.log("Bigger is: " + biggerSelection);
 });
 
+/*Edit Relation - Apply button*/
 editRelationApplyBtn.click(function(){
 	console.log("-----Apply relation-----");
 	console.log("Relation Id: " + selectedRelation);
@@ -324,13 +343,16 @@ editRelationApplyBtn.click(function(){
 	console.log("NodeB: " + relationsList[selectedRelation].nodeB);
 	console.log("Value: " + editRelationValueInput.val());
 	
+	//validate user input for the value of the relation
 	if(isNaN(editRelationValueInput.val()) || editRelationValueInput.val() <= 0){
 		editRelationValueInput.val(1);
 		return message('Invalid Input', 'Please make sure you enter a valid number larger than zero.');
 	}
 	
+	//Edit the relation
 	editRelation(selectedRelation, relationsList[selectedRelation].nodeA, relationsList[selectedRelation].nodeB, editRelationValueInput.val());
 	
+	//change the HTML elements accordingly
 	var nodeA_div = $('#'+relationsList[selectedRelation].nodeA_div);
 	nodeA_div.text(relationsList[selectedRelation].nodeA.text.name);
 	
@@ -339,11 +361,13 @@ editRelationApplyBtn.click(function(){
 	
 	var value_div = $('#'+relationsList[selectedRelation].value_div);
 	value_div.text(editRelationValueInput.val());
+	//refresh the input field
 	editRelationValueInput.val('');
+	//draw the tree in the relation screen
 	drawTree("#relateTreeChart", Tree);
 	editRelationWizard.hide(250);
 });
-
+//Edit Relation - Cancel button
 editRelationCancelBtn.click(function(){
 	editRelationValueInput.val('');
 	editRelationWizard.hide(250);
@@ -398,6 +422,7 @@ cancelDeleteRealtion.click(function(){
 /*
 	Analyze Control
 */
+//initilze variables for Analyze Screen
 var mstrixWizardCloseBtn = $('#mstrixWizardCloseBtn');
 var analyzePanelBtn = $('#analyzePanelBtn');
 var analyzePanel = $('#analyzePanel');
@@ -414,20 +439,20 @@ var reduceTraidBtn = $('#reduceTraidBtn');
 
 
 
-
+/*Analyze Screen - Matrix Close button*/
 mstrixWizardCloseBtn.click(function(){
 	matrixWizard.hide(250);
 });
-
+/*Analyze Screen - Analyze panel button*/
 analyzePanelBtn.click(function(){
 
 	analyzePanel.show(250);
 });
-
+/*Analyze Screen - Close analyze panel button*/
 analyzePanelCloseBtn.click(function(){
 	analyzePanel.hide(250);
 });
-
+/*Analyze Screen - show traids button*/
 showTraidsBtn.click(function(){
 	removeHighlights(map[selectedNode].matrix);
 	showTraidsBtn.hide(100);
@@ -438,7 +463,7 @@ showTraidsBtn.click(function(){
 	showTraid(inconsList[0]);
 	reduceTraidBtn.show(250);
 });
-
+/*Analyze Screen - hide traids button*/
 hideTraidsBtn.click(function(){
 	showTraidsBtn.show(100);
 	hideTraidsBtn.hide(100);
@@ -450,28 +475,28 @@ hideTraidsBtn.click(function(){
 	matrixStatistics.text('');
 	traidTurn = 0;
 });
-
+/*Analyze Screen - next traid button*/
 nextTraidBtn.click(function(){
 	showNextTraid();
 });
-
+/*Analyze Screen - prev. traid button*/
 prevTraidBtn.click(function(){
 	showPrevTraid();
 });
-
+/*Analyze Screen - Maximum traid button*/
 maxInconsTraidBtn.click(function(){
 	removeHighlights(map[selectedNode].matrix);
 	var maxTraid = findMaxIncons(inconsList);
 	showTraid(maxTraid);
 	matrixStatistics.text('inconsistency Value = ' + maxTraid.incons);
 });
-
+/*Analyze Screen - Maximum element button*/
 inconsElementBtn.click(function(){
 	removeHighlights(map[selectedNode].matrix);
 	showMaxElement(map[selectedNode].matrix);
 });
 
-
+/*Analyze Screen - Reduce Incosistency button*/
 reduceBtn.click(function(){
 
 	for(i=0 ; i<10; i++)
@@ -506,7 +531,7 @@ restoreMatrixBtn.click(function(){
 		relationsList = [];
 		newRelList.forEach(function(relation){
 			if(relation != null){
-				addRelation(map[relation.parent.HTMLid], map[relation.nodeA.HTMLid], map[relation.nodeB.HTMLid], relation.value);
+				addRelation(map[relation.nodeA.HTMLid], map[relation.nodeB.HTMLid], relation.value);
 				console.log(relation);
 			}
 			
@@ -516,7 +541,7 @@ restoreMatrixBtn.click(function(){
 	
 	hideTraidsBtn.click(); //hide traid control buttons
 });
-
+/*Analyze Screen - Reduce traid button*/
 reduceTraidBtn.click(function(){
 	
 	reduceTraid(inconsList[traidTurn]);
@@ -566,11 +591,6 @@ function cellClick(cellId){
 			console.log('i = ' + i);
 			console.log('j = ' + j);
 			
-			//map[selectedNode].matrix[i][j] = parseFloat(cellInput.val()).toFixed(3);
-			//map[selectedNode].matrix[j][i] = parseFloat(1/cellInput.val()).toFixed(3);
-			
-		
-			
 			//apply the change in the relationsList and relation tab
 			//nodeA index = i, nodeB index = j
 			for(var loop = 0; loop < relationsList.length; loop++){
@@ -596,7 +616,7 @@ function cellClick(cellId){
 			//after checking and no relation found
 			//add a new relation
 			if(relationApplied === false){
-				addRelation(map[selectedNode], map[selectedNode].children[i], map[selectedNode].children[j], cellInput.val());
+				addRelation(map[selectedNode].children[i], map[selectedNode].children[j], cellInput.val());
 				relationApplied = true;
 			}
 			

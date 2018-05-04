@@ -1,6 +1,16 @@
+
+/*
+	matrix.js is responsible for all matrix operation
+*/
+
 var matrixTestDiv = $('#matrixTestDiv');
 
-
+/*
+	A function to print a node's matrix in a provided html div
+	Inputs:
+		- node: a node refrence (ex: map[nodeX])
+		- targetDiv: an html div id (ex: '#treeDiv')
+*/
 function printMatrix(node, targetDiv){
 	var matrix = node.matrix;
 	var children = node.children;
@@ -62,7 +72,12 @@ function printMatrix(node, targetDiv){
 	targetDiv.append(table);
 }
 /*
-	add a relation in a matrix
+	add a relation in a matrix using pairwise comparison 
+	input: 
+		- matrix: a matrix (Ex: map[nodeA].matrix)
+		- i: integer
+		- j: integer
+		- value: float
 */
 function matrixRelation(matrix,i,j,value){
 	matrix[i][j] = value;
@@ -71,6 +86,8 @@ function matrixRelation(matrix,i,j,value){
 
 /*
 	Calculate the sum of a matrix
+	input: 
+		- matrix: a matrix (Ex: map[nodeA].matrix)
 */
 function matrixSum(matrix){
 	var sum = 0;
@@ -86,6 +103,8 @@ function matrixSum(matrix){
 
 /*
 	Distribute wights among elements based on their relations
+	input: 
+		- id: a ndoe id (Ex: map[nodeX].HTMLid, nodeX.parent)
 */
 function matrixEvalWeight(id){
 	
@@ -103,6 +122,8 @@ function matrixEvalWeight(id){
 /*
 	matrixDeleteElement(id)
 	removes an element from its parent's matrix
+	input:
+		- id: a ndoe id (Ex: map[nodeX].HTMLid, nodeX.parent)
 */
 function matrixDeleteElement(id){
 	var nodeIndex = getNodeIndex(id);

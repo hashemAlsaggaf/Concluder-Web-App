@@ -1,3 +1,7 @@
+/*
+	relation.js is responsible for all relations operations
+*/
+
 var relationsDiv = $('#relationsDiv');
 var selectedA = $('#selectedA');
 var selectedB = $('#selectedB');
@@ -9,6 +13,7 @@ var relId = 0;
 /*
 	deleteSubtreeRelations
 	removes all relations under a parent
+	Input: node id (Ex: node.HTMLid, map[nodeA.HTMLid])
 */
 function deleteSubtreeRelations(nodeId){
 	for(var i = 0; i < relationsList.length-1; i++){
@@ -28,20 +33,21 @@ function deleteSubtreeRelations(nodeId){
 	}
 	
 	//remove all relations under this node
-	//remove a relation if any children reltaed
+	//remove a relation if any of the children are reltaed
 	var startNode = map[nodeId];
 	
 	startNode.children.forEach(function (child){
 		deleteSubtreeRelations(child.HTMLid);
-		
 	});
 	
+	//Debugging
 	console.log('--relationsList Below--');
 	console.log(relationsList);
 }
 
 /*
 	remove a relation from the html div and from relationList
+	Input: node id (Ex: node.HTMLid, map[nodeA.HTMLid])
 */
 function deleteRelatedRelation(nodeId){
 	console.log("--- deleteRelatedRelation ---");
@@ -114,6 +120,7 @@ var relationSelectionFunction = function(){
 		console.log("node A = " + nodeA + " && node B = " + nodeB);
 
 		selectedNode = $(this).attr('id');
+		//Debugging
 		console.log("This nodes parent is " + map[selectedNode].parent);
 		console.log("Selected Node is " + selectedNode);
 		
@@ -130,10 +137,14 @@ $.fn.exists = function () {
 
 /*
 	Adds a relation between two nodes
-	variables parent, relNodeA, and relNodeB are actual nodes, not ids
+	variables relNodeA, and relNodeB are node refrences, not ids (use map[node.HTMLid])
+	Inputs: 
+		relNodeA:	first node in the relation (this is the bigger node)
+		relNodeB:	second node in the relation
+		value:		The value of the relation
 */
-function addRelation(parent, relNodeA, relNodeB, value){
-	// parent ARGUMENT SHOULD BE REMOVED, PARENT CAN BE AQUIRED FROM A NODE ARGUMENT
+function addRelation(relNodeA, relNodeB, value){
+
 	
 	//debug input:
 	console.log("addRelation:nodeA = "+relNodeA);
@@ -169,9 +180,12 @@ function addRelation(parent, relNodeA, relNodeB, value){
 	}
 	
 	
+	parent = map[relNodeA.parent];
+	
 	/*
 		update matrix
 	*/
+	
 	var i = findIndex(parent, relNodeA);
 	var j = findIndex(parent, relNodeB);
 	
@@ -258,12 +272,4 @@ function findIndex(parent, node){
 		}	
 	}
 	console.log('index of '+node.HTMLid+' not found! there is ' + parent.children.length + " children for " + parent.HTMLid);
-}
-
-
-function applyRelationsFromMatrix(node){
-	var parent = map[node.parent];
-	var matrix = node.matrix;
-	
-	
 }

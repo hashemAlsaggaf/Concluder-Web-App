@@ -1,3 +1,7 @@
+/*
+	analyze.js is responsible for all analyzing tasks
+*/
+
 var matrixWizard = $('#matrixWizard');
 var matrixTitle = $('#matrixTitle');
 var matrixView = $('#matrixView');
@@ -215,17 +219,17 @@ function autoReduce(){
 		map[selectedNode].matrix[traid.x[0]][traid.x[1]] = x.toFixed(3);
 		map[selectedNode].matrix[traid.x[1]][traid.x[0]] = (1/x).toFixed(3);
 		//apply change in relationsList and relations tab
-		addRelation(map[selectedNode], map[selectedNode].children[traid.x[0]], map[selectedNode].children[traid.x[1]], x.toFixed(3));
+		addRelation(map[selectedNode].children[traid.x[0]], map[selectedNode].children[traid.x[1]], x.toFixed(3));
 		//-----------------------------------------------------		
 		map[selectedNode].matrix[traid.y[0]][traid.y[1]] = y.toFixed(3);
 		map[selectedNode].matrix[traid.y[1]][traid.y[0]] = (1/y).toFixed(3);
 		//apply change in relationsList and relations tab
-		addRelation(map[selectedNode], map[selectedNode].children[traid.y[0]], map[selectedNode].children[traid.y[1]], y.toFixed(3));	
+		addRelation(map[selectedNode].children[traid.y[0]], map[selectedNode].children[traid.y[1]], y.toFixed(3));	
 		//-----------------------------------------------------		
 		map[selectedNode].matrix[traid.z[0]][traid.z[1]] = z.toFixed(3);		
 		map[selectedNode].matrix[traid.z[1]][traid.z[0]] = (1/z).toFixed(3);		
 		//apply change in relationsList and relations tab
-		addRelation(map[selectedNode], map[selectedNode].children[traid.z[0]], map[selectedNode].children[traid.z[1]], z.toFixed(3));
+		addRelation(map[selectedNode].children[traid.z[0]], map[selectedNode].children[traid.z[1]], z.toFixed(3));
 		//-----------------------------------------------------
 		
 	});
@@ -250,20 +254,20 @@ function reduceTraid(traid){
 		map[selectedNode].matrix[traid.x[0]][traid.x[1]] = x.toFixed(3);
 		map[selectedNode].matrix[traid.x[1]][traid.x[0]] = (1/x).toFixed(3);
 		//apply change in relationsList and relations tab
-		addRelation(map[selectedNode], map[selectedNode].children[traid.x[0]], map[selectedNode].children[traid.x[1]], x.toFixed(3));
+		addRelation(map[selectedNode].children[traid.x[0]], map[selectedNode].children[traid.x[1]], x.toFixed(3));
 		//-----------------------------------------------------
 		
 		map[selectedNode].matrix[traid.y[0]][traid.y[1]] = y.toFixed(3);
 		map[selectedNode].matrix[traid.y[1]][traid.y[0]] = (1/y).toFixed(3);
 		//apply change in relationsList and relations tab
-		addRelation(map[selectedNode], map[selectedNode].children[traid.y[0]], map[selectedNode].children[traid.y[1]], y.toFixed(3));		
+		addRelation(map[selectedNode].children[traid.y[0]], map[selectedNode].children[traid.y[1]], y.toFixed(3));		
 		//-----------------------------------------------------
 		
 		
 		map[selectedNode].matrix[traid.z[0]][traid.z[1]] = z.toFixed(3);		
 		map[selectedNode].matrix[traid.z[1]][traid.z[0]] = (1/z).toFixed(3);	
 		//apply change in relationsList and relations tab
-		addRelation(map[selectedNode], map[selectedNode].children[traid.z[0]], map[selectedNode].children[traid.z[1]], z.toFixed(3));
+		addRelation(map[selectedNode].children[traid.z[0]], map[selectedNode].children[traid.z[1]], z.toFixed(3));
 		//-----------------------------------------------------
 }
 

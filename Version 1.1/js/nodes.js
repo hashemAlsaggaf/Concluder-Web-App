@@ -1,3 +1,7 @@
+/*
+	node.js is responsible for all tree operations
+*/
+
 //variables to assign id's
 //var idPrefix = "node_";
 var date = new Date();
@@ -152,7 +156,11 @@ function assembleNode(parent, name, id){
 	newId = idPrefix + nodeIdCounter;
 }
 
-
+/*
+	Delete a node from the tree
+	input:
+		- id: a ndoe id (Ex: map[nodeX].HTMLid, nodeX.parent, selectedNode)
+*/
 function deleteNode(id){
 
 	var parentId = map[id].parent;
@@ -181,21 +189,21 @@ function deleteNode(id){
 	console.log(map);
 
 }
-
-function editNodeName(id, currentNode, name){
-	/*
-	if (currentNode.HTMLid == id) {
-		currentNode.text.name = name;
-		console.log("node " + id + " edited. Name = " + name);
-    } else {
-		currentNode.children.forEach(function (currentChild){
-			editNodeName(id, currentChild, name);
-		});
-    }
-	*/
+/*
+	Edit a node name
+	input:
+		- id: a ndoe id (Ex: map[nodeX].HTMLid, nodeX.parent)
+		- name: string
+*/
+function editNodeName(id, name){
 	map[id].text.name = name;
 }
 
+/*
+	function to distribute weights of children evenly
+	input:
+		- parent: a node refrence (Ex: map['nodeX'])
+*/
 function distributeWeight(parent, weight){
 	var factor = parent.children.length;
 	parent.children.forEach(function (child){
@@ -204,10 +212,24 @@ function distributeWeight(parent, weight){
 	});
 }
 
+/*
+	function to get a node parent
+	input:
+		- id: a ndoe id (Ex: map[nodeX].HTMLid, nodeX.parent)
+	return:
+		node parent id
+*/
 function getParent(id){
 	return map[id].parent;
 }
 
+/*
+	function to count a node children
+	input:
+		- id: a ndoe id (Ex: map[nodeX].HTMLid, nodeX.parent)
+	return:
+		number of children (integer)
+*/
 function countChildren(id){
 	counter = 0;
 	map[id].children.forEach(function(child){

@@ -1,3 +1,13 @@
+/*
+	index.js is responsible for:
+		- Starting the application
+		- Starting a new project
+		- Open an existing project
+		- Saving a project
+		- Navigation buttons
+		- Shrtcuts
+*/
+
 var panelHand = $('#panelHand');
 var panel = $('#panel');
 var panelState = "open";
@@ -14,8 +24,8 @@ var analyzeTreeChart = $('#analyzeTreeChart');
 	New File
 */
 
+//New File button
 var newfileIcon = $('#newfileIcon');
-
 newfileIcon.click(function(){
 	nodeIdCounter = 1;
 	//new tree
@@ -56,39 +66,50 @@ newfileIcon.click(function(){
 var openIcon = $('#openIcon');
 var fileInput = $('#fileInput');
 
+//Open File button
 openIcon.click(function(){
 	fileInput.click();
 });
 
+//Action for selecting a file
 fileInput.on("change",function(){
 	
 	var fileSelector = document.getElementById('fileInput');
 	file = fileSelector.files[0];
 	
+	//validate the selected file
 	if(file === undefined){
 		return;
 	}else{
-		loadingAnim(1);//show loading message
 		fileName = file.name;
 	}
 	
 	console.log('Selected file name is ' + fileName);
 	
-	//----read selected file
+	//read selected file by creating a file reader
 	var fr = new FileReader();
 	fr.readAsText(fileSelector.files[0]);
+	
+	//action for loading a file
 	fr.onload = function(){
-		
+		/*
+		load Tree, Map, and relation list by splitting the file into
+		three elements using '</jsonBreak/>'
+		*/
 		result = fr.result.split('</jsonBreak/>');
 		console.log(result);
 		
+		//initiate a new map and a new relation list
 		var newMap = null;
 		var newRelList = null;
 		
+		//try to read a file and report an error if file is not compatible
 		try{
+			//bring the tree from result[0]
 			var newTree = JSON.parse(result[0]);
 			
 			try{
+				//bring the map from result[1] if found
 				newMap = JSON.parse(result[1]);
 			}catch(e){
 				newMap = {
@@ -99,29 +120,28 @@ fileInput.on("change",function(){
 			
 			
 			try{
+				//bring the relations list from result[2] if found
 				newRelList = JSON.parse(result[2]);
 				relId = 0; // reset relation id counter
 			}catch(e){
 				newRelList = [];
 				console.log('--Loading: No relations list found!');
 			}
-			
-			
-			//nodeIdCounter = newMap.length;
+
 			welcomeScreen.hide(250);
 		}catch(e){
-			
 			return message('Ooops!','Sorry, the file is not compatible or corrupted.');
 		}
 			
 		
-		//Tree = newTree;
-		
-		//----load tree
-		nodeIdCounter = 1;
+		//load the tree
+		nodeIdCounter = 1; // reset the node counter in nodes.js
+		//make a fresh tree by cloning the treeConfig (located in nodes.js)
 		Tree = $.extend(true, {}, treeConfig);
+		//assign the root
 		root = Tree.nodeStructure;
 		
+		//refresh the refrence map table
 		map = {
 			'node_root': root
 		};
@@ -130,8 +150,10 @@ fileInput.on("change",function(){
 		
 		root.text.name = newTreeRoot.text.name;
 		
+		/*
+		A for-each recursive method to assemble the new tree by iterating through each child
+		*/
 		function loadTree(node){
-			
 			
 			node.children.forEach(function (child){
 				assembleNode(map[node.HTMLid], child.text.name, child.HTMLid);
@@ -148,31 +170,30 @@ fileInput.on("change",function(){
 		console.log(newTree);
 
 		
-		//----load relationsList from newRelList to Relation Tab
+		//load relationsList from newRelList to Relation Tab
 		function loadRelations(){
 			relationsList = [];
 			newRelList.forEach(function(relation){
 				if(relation != null){
-					addRelation(map[relation.parent.HTMLid], map[relation.nodeA.HTMLid], map[relation.nodeB.HTMLid], relation.value);
+					addRelation(map[relation.nodeA.HTMLid], map[relation.nodeB.HTMLid], relation.value);
 					console.log(relation);
 				}
 				
 			});
 		}
-		relationsDiv.html(''); // empty Relations Panel then load relations
+		// empty Relations Panel then load relations
+		relationsDiv.html('');
 		loadRelations();
 		
+		//show the edit screen and draw the tree
 		analyzeScreen.hide(250);
-		
 		relationScreen.hide(250);
 		editNodeScreen.show();
 		drawTree(editTreeChart, Tree);
-		loadingAnim(0);
 	}
 	
 	
-	loadingAnim(0);//hide loading message
-	
+	//refresh fileSelector
 	fileSelector.value = '';
 });
 
@@ -200,25 +221,41 @@ cancelSaveFileBtn.click(function(){
 	saveFileBox.hide(250);
 });
 
+//We need to copy the tree, map, and the relations list
+var fileLink = $('#saveFileLink');
 saveFileBtn.click(function(){
-	var fileLink = document.createElement('a');
-	fileLink.href = 'data:attachment/text,' + encodeURI(JSON.stringify(Tree)+'</jsonBreak/>'+JSON.stringify(map)+'</jsonBreak/>'+JSON.stringify(relationsList)); // stringify the tree object (convert to text)
-	fileLink.target = '_blank'; // open in new tab
-	fileLink.download = saveFileNameInput.val()+".json"; // get filename from user input field
-	fileLink.click();
-	saveFileBox.hide();
-});
+	
+	var treeToSave = {};
+	for(var i in Tree){
+		treeToSave[i] = Tree[i];
+	}
+	
+	var mapToSave = {};
+	for(var i in Tree){
+		mapToSave[i] = map[i];
+	}
 
+	// stringify the tree object (convert to text)
+	fileLink[0].href = 'data:attachment/text,' + JSON.stringify(treeToSave)+'</jsonBreak/>'+JSON.stringify(mapToSave)+'</jsonBreak/>'+JSON.stringify(relationsList); 
+	fileLink[0].target = '_blank'; // open in new tab
+	fileLink[0].download = saveFileNameInput.val()+".json"; // get filename from user input field
+	fileLink[0].click();
+	saveFileBox.hide();
+	//Debugging
+	console.log('save button click detected!');
+	console.log(fileLink);
+});
 
 //Main Panel Buttons
 var treeIcon = $('#treeIcon');
 var relationIcon = $('#relationIcon');
 var analyzeIcon = $('#analyzeIcon');
 
-// tree icon
+//Tree button
 treeIcon.click(function(){
-
+	//assign selection function
 	Tree.chart.callback.onTreeLoaded = editingSelectionFunction;
+	//show edit screen
 	relationScreen.hide();
 	analyzeScreen.hide();
 	editNodeScreen.show();
@@ -231,43 +268,55 @@ treeIcon.click(function(){
 	drawTree("#editTreeChart", Tree);
 });
 
-//relation icon
+//Relation button
 relationIcon.click(function(){
+	//initiate selection variables
 	var nodeA = null;
 	var nodeB = null;
+	//show relation screen
 	relationWizard.hide();
 	editNodeScreen.hide();
 	analyzeScreen.hide();
 	relationScreen.show();
+	//disable collapsable option
 	Tree.chart.node.collapsable = false;
 	Tree.chart.callback.onTreeLoaded = relationSelectionFunction;
 	//refresh tree charts
 	editTreeChart.empty();
 	relateTreeChart.empty();
 	analyzeTreeChart.empty();
+	//draw the tree in the relation screen
 	drawTree("#relateTreeChart", Tree);
 	
 });
 
-//analyze icon
+//Analyze button
 analyzeIcon.click(function(){
+	//hide other screens and wizards
 	relationWizard.hide();
 	editNodeScreen.hide();
 	relationScreen.hide();
 	matrixWizard.hide();
+	//refresh status text
 	matrixStatistics.text('');
+	//show analyze screen
 	analyzeScreen.show();
+	//disable collapsable nodes in the tree
 	Tree.chart.node.collapsable = false;
+	//assign selection function
 	Tree.chart.callback.onTreeLoaded = analyzeSelectionFunction;
 	//refresh tree charts
 	editTreeChart.empty();
 	relateTreeChart.empty();
 	analyzeTreeChart.empty();
+	//draw tree in analyze screen
 	drawTree("#analyzeTreeChart", Tree);
+	//highlight nodes that can be analyzed
 	highlightMatrixNodes('node_root');
 });
 
 
+//panel animation (Slide left / Slide right)
 panelHand.click(function(){
 	switch(panelState){
 		case "open":
@@ -286,17 +335,20 @@ panelHand.click(function(){
 	
 });
 
-//Start app
+//Start application
 var welcomeScreen = $('#welcomeScreen');
 var openProjectBtn = $('#openProjectBtn');
 var startFreshBtn = $('#startFreshBtn');
 
+//show welcome screen
 welcomeScreen.show(250);
 
+//"Open existing project" button
 openProjectBtn.click(function(){
 	openIcon.click();
 });
 
+//"Start Fresh" button
 startFreshBtn.click(function(){
 	welcomeScreen.hide(250);
 	treeIcon.click();
@@ -311,13 +363,9 @@ selectedNode = root.HTMLid; // Select root by id
 */
 
 //Ctrl + Q = Add Node
-
-
 $(document).keypress("q",function(e) {
   if(e.ctrlKey)
     addNodeBtn.click();
 });
 
-
-//testing:
 
