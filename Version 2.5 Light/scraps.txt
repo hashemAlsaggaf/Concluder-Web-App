@@ -1,0 +1,5 @@
+Node A long Desc.
+when details are key
+sometimes details are long
+sometimes details are important
+long desc feature is nice
