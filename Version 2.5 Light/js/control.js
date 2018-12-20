@@ -114,42 +114,16 @@ var relationNodeBText = $('#relationNodeBText');
 var relationValue = $('#relationValue');
 var relationApplyBtn = $('#relationApplyBtn');
 var relateNodeBtn = $('#relateNodeBtn');
-var relationModeBox = $('#relationModeBox');
-var relationModeBoxExitButton = $('#relationModeBoxExitButton');
+var relationModeMsg = $('#relationModeMsg');
+var relationModeMsgExitButton = $('#relationModeMsgExitButton');
 
 var selectedNodeA = null;
 var selectedNodeB = null;
 
-relationDialogCloseBtn.click(function(){
-	relationDialog.hide(200);
-});
-
-/*
-	Relate button actions
-	1- hide all nodes
-	2- only show relatable nodes (siblings)
-*/
-var nodeRelationClickFunction = function(){
-	$('.nodeClick').click(function(){
-		//if this is not the first selected node, and a sibling of the first selected node
-		console.log(map[$(this).attr('id')]);
-		console.log(map[selectedNodeA]);
-		if($(this).attr('id') != selectedNodeA && map[$(this).attr('id')].parent == map[selectedNodeA].parent){
-			selectedNodeB = $(this).attr('id');
-			$('#'+selectedNodeA).css({'background-color': '#2fb1d1', 'color': 'white'});
-			$('#'+selectedNodeB).css({'background-color': '#2fb1d1', 'color': 'white'});
-			relationDialog.show(200);
-		}else{
-			console.log('error in relation selection :(');
-		}
-	});
-};
-
 relateNodeBtn.click(function(){
-	
 	//console.log($(this).attr('id'));
-	
-	if(map[selectedNode].parent != ""){
+	//if this is not the root node
+	if(map[selectedNode].HTMLid != "node_root"){
 		relationMode = true;
 		Tree.chart.callback.onTreeLoaded = nodeRelationClickFunction;
 		drawTree(Tree);
@@ -165,17 +139,58 @@ relateNodeBtn.click(function(){
 		selectedNodeA = selectedNode;
 		//console.log(Tree);
 
-		relationModeBox.show(200);
+		relationModeMsg.show(200);
+		relationValue.text('');
+		relationValue.focus();
 	}else{
 		console.log('--> the root cannot be related to any node');
 	}
-	
 });
 
+/*
+	Relate button actions
+	1- hide all nodes
+	2- only show relatable nodes (siblings)
+*/
+var nodeRelationClickFunction = function(){
+	$('.nodeClick').click(function(){
+		//if this is not the first selected node, and a sibling of the first selected node
+		console.log(map[$(this).attr('id')]);
+		console.log(map[selectedNodeA]);
+		if($(this).attr('id') != selectedNodeA && map[$(this).attr('id')].parent == map[selectedNodeA].parent){
+			selectedNodeB = $(this).attr('id'); //select the second node
+			$('#'+selectedNodeA).css({'background-color': '#2fb1d1', 'color': 'white'});
+			$('#'+selectedNodeB).css({'background-color': '#2fb1d1', 'color': 'white'});
+			relationNodeAText.text(map[selectedNodeA].text.name);
+			relationNodeBText.text(map[selectedNodeB].text.name);
+			relationDialog.show(200);
+		}else{
+			console.log('error in relation selection :(');
+		}
+	});
+};
 
+function exitRelateMode(){
+	selectedNode = selectedNodeA = selectedNodeB = null;
+	Tree.chart.callback.onTreeLoaded = defaultNodeClickFunction;
+	relationDialog.hide(200);
+	relationModeMsg.hide();
+	drawTree(Tree);
+}
 
+relationDialogCloseBtn.click(function(){
+	exitRelateMode();
+});
 
+relationModeMsgExitButton.click(function(){
+	exitRelateMode();
+});
 
+relationApplyBtn.click(function(){
+	var value = relationValue.val();
+	addRelation(map[selectedNodeA], map[selectedNodeB], value);
+	exitRelateMode();
+});
 
 
 

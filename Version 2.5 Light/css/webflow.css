@@ -402,7 +402,7 @@ textarea.w-select {
 }
 .w-file-upload {
   display: block;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
 }
 .w-file-upload-input {
   width: 0.1px;
@@ -446,7 +446,7 @@ textarea.w-select {
   flex-grow: 1;
   justify-content: space-between;
   margin: 0;
-  padding: 8px 12px;
+  padding: 8px 9px 8px 11px;
   border: 1px solid #cccccc;
   background-color: #fafafa;
 }
@@ -456,8 +456,9 @@ textarea.w-select {
   display: block;
 }
 .w-file-remove-link {
-  width: 20px;
-  height: 20px;
+  margin-top: 3px;
+  width: 16px;
+  height: 16px;
   display: flex;
   cursor: pointer;
 }
@@ -467,7 +468,8 @@ textarea.w-select {
 }
 .w-file-upload-error-msg {
   color: #ea384c;
-  padding-top: 12px;
+  margin-top: 10px;
+  padding: 2px 0;
 }
 .w-file-upload-info {
   display: inline-block;
@@ -496,6 +498,9 @@ textarea.w-select {
 .w-icon-file-upload-svg {
   width: 100%;
   height: 100%;
+}
+.w-form-recaptcha {
+  margin-bottom: 8px;
 }
 .w-container {
   margin-left: auto;

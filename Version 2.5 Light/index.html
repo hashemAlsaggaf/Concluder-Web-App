@@ -209,41 +209,45 @@
 	
 	<!--Relation Screen-->
 	<div data-w-id="6c000985-3410-0dc6-55a5-a13fa5ed6bd7" style="display:none;opacity:0;-webkit-transform:translateX(0) translateY(0) translateZ(0) scaleX(0) scaleY(0) scaleZ(1) rotateX(0) rotateY(0) rotateZ(0) skewX(0) skewY(0);-moz-transform:translateX(0) translateY(0) translateZ(0) scaleX(0) scaleY(0) scaleZ(1) rotateX(0) rotateY(0) rotateZ(0) skewX(0) skewY(0);-ms-transform:translateX(0) translateY(0) translateZ(0) scaleX(0) scaleY(0) scaleZ(1) rotateX(0) rotateY(0) rotateZ(0) skewX(0) skewY(0);transform:translateX(0) translateY(0) translateZ(0) scaleX(0) scaleY(0) scaleZ(1) rotateX(0) rotateY(0) rotateZ(0) skewX(0) skewY(0)" class="relations-screen">
-		<div class="box-header w-clearfix">
-		  <div data-w-id="489223d3-58ea-bd67-36d7-42846092e975" class="box-header-close-btn">X</div>
-		  <div class="box-header-text">Relations</div>
-		</div>
-		<div class="relations-tab-bg">
-			<div class="relation-parent-box">
-				<div class="relation-parent-header">
-					<div class="relation-parent-header-title">Root</div>
-				</div>
-				<div class="relation-box">
-					<div class="relation-edit-container">
-						<img src="images/editBtn.svg" class="relation-edit-icon">
-						<img src="images/deleteBtn.svg" class="relation-edit-icon">
+		<div class="relations-screen-bg">
+			<div class="box-header w-clearfix">
+			  <div data-w-id="489223d3-58ea-bd67-36d7-42846092e975" class="box-header-close-btn">X</div>
+			  <div class="box-header-text">Relations</div>
+			</div>
+			<div id="relationsDiv" class="relations-tab-bg">
+				<!--
+				<div id="'+parent_div+'" class="relation-parent-box">
+					<div class="relation-parent-header">
+						<div id="parent_text_div" class="relation-parent-header-title">Root</div>
 					</div>
-					<div class="relation">
-						<div class="relation-visual-container">
-							<div class="relation-visual">
-								<div class="relation-a-text">A</div>
-							</div>
-							<img src="images/arrow.svg" width="20">
-							<div class="relation-visual">
-								<div class="relation-a-text">B</div>
-							</div>
+					<div class="relation-box">
+						<div class="relation-edit-container">
+							<img data-relId="rel_'+relId+'" onclick="editRelation(this.getAttribute(\'data-relId\'))" src="images/editBtn.svg" class="relation-edit-icon">
+							<img data-relId="rel_'+relId+'" onclick="deleteRelation(this.getAttribute(\'data-relId\'))" src="images/deleteBtn.svg" class="relation-edit-icon">
 						</div>
-						<div class="relation-value">2.5</div>
+						<div class="relation">
+							<div class="relation-visual-container">
+								<div class="relation-visual">
+									<div id="'+nodeA_div+'" class="relation-a-text">A</div>
+								</div>
+								<img src="images/arrow.svg" width="20">
+								<div class="relation-visual">
+									<div id="'+nodeB_div+'"class="relation-a-text">B</div>
+								</div>
+							</div>
+							<div id="'+rel_value_div+'" class="relation-value">2.5</div>
+						</div>
 					</div>
 				</div>
+				-->
 			</div>
 		</div>
 	</div>
 	
-	<div id="relationModeBox" class="relation-mode-box">
+	<div id="relationModeMsg" class="relation-mode-box">
 		<div class="relatio-mode-text-container">
 			<div class="relation-mode-box-text">You are in Relation Mode, </div>
-			<div id="relationModeBoxExitButton" class="exit-relation-btn">Exit Relation Mode</div>
+			<div id="relationModeMsgExitButton" class="exit-relation-btn">Exit Relation Mode</div>
 		</div>
 	</div>
 	<script src="https://code.jquery.com/jquery-3.3.1.min.js" type="text/javascript" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -252,11 +256,11 @@
 	<!--<script src="Tools/jquery.easing.1.3.js" type="text/javascript"></script>-->
 	<script src="Tools/treant-js-master/vendor/raphael.js" type="text/javascript"></script> 
 	<script src="Tools/treant-js-master/Treant.js" type="text/javascript"></script> 
-	<script src="js/nodes.js?v=1.0.0.1" type="text/javascript"></script>
+	<script src="js/tree.js?v=1.0.0.1" type="text/javascript"></script>
 
-	<!--<script src="js/matrix.js?v=1.0.0.1" type="text/javascript"></script>
-	<!--<script src="js/relation.js?v=1.0.0.1" type="text/javascript"></script> 
-	<!--<script src="js/analyze.js?v=1.0.0.1" type="text/javascript"></script> -->
+	<script src="js/matrix.js?v=1.0.0.1" type="text/javascript"></script>
+	<script src="js/relation.js?v=1.0.0.1" type="text/javascript"></script> 
+	<!--<script src="js/analyze.js?v=1.0.0.1" type="text/javascript"></script>--> 
 	<script src="js/control.js?v=1.0.0.1" type="text/javascript"></script> 
 	<script src="js/index.js?v=1.0.0.1" type="text/javascript"></script> 
 </body>

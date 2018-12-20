@@ -1,5 +1,4 @@
-Node A long Desc.
-when details are key
-sometimes details are long
-sometimes details are important
-long desc feature is nice
+ <div id="'+parent_div+'" class="relation-parent-box"> <div class="relation-parent-header"> <div id="parent_text_div" class="relation-parent-header-title">Root</div> </div> <div class="relation-box"> <div class="relation-edit-container"> <img data-relId="rel_'+relId+'" onclick="editRelation(this.getAttribute(\'data-relId\'))" src="images/editBtn.svg" class="relation-edit-icon"> <img data-relId="rel_'+relId+'" onclick="deleteRelation(this.getAttribute(\'data-relId\'))" src="images/deleteBtn.svg" class="relation-edit-icon"> </div> <div class="relation"> <div class="relation-visual-container"> <div class="relation-visual"> <div id="'+nodeA_div+'" class="relation-a-text">A</div> </div> <img src="images/arrow.svg" width="20"> <div class="relation-visual"> <div id="'+nodeB_div+'"class="relation-a-text">B</div> </div> </div> <div id="'+rel_value_div+'" class="relation-value">2.5</div> </div> </div> </div>
+ 
+ 
+<div class="relation-box"> <div class="relation-edit-container"> <img data-relId="rel_'+relId+'" onclick="editRelation(this.getAttribute(\'data-relId\'))" src="images/editBtn.svg" class="relation-edit-icon"> <img data-relId="rel_'+relId+'" onclick="deleteRelation(this.getAttribute(\'data-relId\'))" src="images/deleteBtn.svg" class="relation-edit-icon"> </div> <div class="relation"> <div class="relation-visual-container"> <div class="relation-visual"> <div id="'+nodeA_div+'" class="relation-a-text">A</div> </div> <img src="images/arrow.svg" width="20"> <div class="relation-visual"> <div id="'+nodeB_div+'"class="relation-a-text">B</div> </div> </div> <div id="'+rel_value_div+'" class="relation-value">2.5</div> </div> </div>

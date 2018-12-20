@@ -2,13 +2,11 @@
 	relation.js is responsible for all relations operations
 */
 
-var relationsDiv = $('#relationsDiv');
-var selectedA = $('#selectedA');
-var selectedB = $('#selectedB');
-
 var relationsList = [];
 var selectedRelation;
 var relId = 0;
+
+var relationsDiv = $('#relationsDiv');
 
 /*
 	deleteSubtreeRelations
@@ -72,60 +70,7 @@ function deleteRelatedRelation(nodeId){
 	console.log("relationsList after");
 	console.log(relationsList);
 }
-/*
-	relationSelectionFunction will execute when the user clicks on nodes in the relation screen
-	it will detect first and second selections
-*/
-var relationSelectionFunction = function(){
-	$('.nodeClick').click(function(){
-		if(nodeA == null && nodeB == null){ // this is first selection, need to check if this node has siblings
-			nodeA = map[$(this).attr('id')];
-			$(this).css({'background-color': '#2fb1d1', 'color': 'white'});
-		}else if(nodeA != null && nodeB == null){
-			
-			$(this).css({'background-color': '#2fb1d1', 'color': 'white'});
-			
-			nodeB = map[$(this).attr('id')];
-			
-			//Make sure nodeA and nodeB are not the same
-			if(nodeA === nodeB){
-				message('Same node is selected twice!','Please select different nodes under the same parent.');
-				nodeA = null;
-				nodeB = null;
-				clearSelection();
-				return;
-			}
-			
-			// Make sure both nodes are under the same parent
-			if(nodeA.parent != nodeB.parent){
-				message("Not the same Parents!","Please select nodes under the same parents.");
-				nodeA = null;
-				nodeB = null;
-				clearSelection();
-				return;
-			}
-			
-			// show the two selections
-			selectedA.text(nodeA.text.name);
-			selectedB.text(nodeB.text.name);
-			
-			relationWizard.show(250);
-			selectedA.css({"background-color": "lime"});
-			
-		}else if(nodeA != null && nodeB != null){
-			nodeA = null;
-			nodeB = null;			
-			drawTree("#relateTreeChart", Tree);
-		}
-		console.log("node A = " + nodeA + " && node B = " + nodeB);
 
-		selectedNode = $(this).attr('id');
-		//Debugging
-		console.log("This nodes parent is " + map[selectedNode].parent);
-		console.log("Selected Node is " + selectedNode);
-		
-	});	
-}
 
 /*
 	Function to check if a jquery selector is empty or not
@@ -194,23 +139,28 @@ function addRelation(relNodeA, relNodeB, value){
 	/*
 		add relation div
 	*/
-	var parentPrefix = "parent_";
-	var parentId = parentPrefix + parent.HTMLid;
+
 	
-	var div = "";
+	var divToAppend = "";
+	var relation_div = "rel_"+relId+"_div";
+	var parent_div = "rel_"+parent.HTMLid+"_div";
+	var parent_text_div = "rel_"+parent.HTMLid+"_text_div";
+	var nodeA_div = "rel_"+relId+"_nodeA_div";
+	var nodeB_div = "rel_"+relId+"_nodeB_div";
+	var rel_value_div = "rel_"+relId+"_value_div";
 	
 	/*
 		if a parent div exist, add the relation div in it, or add a parent div to contain the new relation div.
 	*/
 	
-	if($('#'+parentId).exists()){
-		div += '<div id="rel'+relId+'Div" class="node-relation-div"> <div class="row w-row"> <div class="relation-buttons w-col w-col-2 w-col-small-2 w-col-tiny-2"> <img data-div="#rel'+relId+'Div" data-relId="'+relId+'" onclick="deleteRelationClick(this.getAttribute(\'data-relId\'),this.getAttribute(\'data-div\'))" src="images/deleteBtn.svg" class="relation-buttons-icon-delete"> <img data-relId="'+relId+'" src="images/editBtn.svg" class="relation-buttons-icon-edit" onclick="editRelationClick(this.getAttribute(\'data-relId\'))"> </div> <div class="relation w-col w-col-10 w-col-small-10 w-col-tiny-10"> <div class="w-row"> <div class="node-to-relate w-col w-col-4 w-col-small-4 w-col-tiny-4"> <div id="rel_'+relId+'NodeA" class="node-text">'+relNodeA.text.name+'</div> </div> <div class="column w-col w-col-4 w-col-small-4 w-col-tiny-4"> <img src="images/arrow.svg" width="58" class="arrow"> <div id="rel_'+relId+'value" class="relation-input">'+value+'</div> </div> <div class="node-to-relate w-col w-col-4 w-col-small-4 w-col-tiny-4"> <div id="rel_'+relId+'NodeB" class="node-text">'+relNodeB.text.name+'</div> </div> </div> </div> </div> </div> </div>';
+	if($('#'+parent_div).exists()){
+		divToAppend += '<div class="relation-box"> <div class="relation-edit-container"> <img data-relId="rel_'+relId+'" onclick="editRelation(this.getAttribute(\'data-relId\'))" src="images/editBtn.svg" class="relation-edit-icon"> <img data-relId="rel_'+relId+'" onclick="deleteRelation(this.getAttribute(\'data-relId\'))" src="images/deleteBtn.svg" class="relation-edit-icon"> </div> <div class="relation"> <div class="relation-visual-container"> <div class="relation-visual"> <div id="'+nodeA_div+'" class="relation-a-text">'+relNodeA.text.name+'</div> </div> <img src="images/arrow.svg" width="20"> <div class="relation-visual"> <div id="'+nodeB_div+'"class="relation-a-text">'+relNodeB.text.name+'</div> </div> </div> <div id="'+rel_value_div+'" class="relation-value">'+value+'</div> </div> </div>';
 		
-		$('#'+parentId).append(div);
+		$('#'+parent_div).append(divToAppend);
 	}else{
-		div += '<div id="'+parentId+'_div" class="parents"> <div id="'+parentId+'" class="parent-name-saved-relation">'+parent.text.name+'</div> <div id="rel'+relId+'Div" class="node-relation-div"> <div class="row w-row"> <div class="relation-buttons w-col w-col-2 w-col-small-2 w-col-tiny-2"> <img data-div="#rel'+relId+'Div" data-relId="'+relId+'" onclick="deleteRelationClick(this.getAttribute(\'data-relId\'), this.getAttribute(\'data-div\'))" src="images/deleteBtn.svg" class="relation-buttons-icon-delete"> <img data-relId="'+relId+'" src="images/editBtn.svg" class="relation-buttons-icon-edit" onclick="editRelationClick(this.getAttribute(\'data-relId\'))"> </div> <div class="relation w-col w-col-10 w-col-small-10 w-col-tiny-10"> <div class="w-row"> <div class="node-to-relate w-col w-col-4 w-col-small-4 w-col-tiny-4"> <div id="rel_'+relId+'NodeA" class="node-text">'+relNodeA.text.name+'</div> </div> <div class="column w-col w-col-4 w-col-small-4 w-col-tiny-4"> <img src="images/arrow.svg" width="58" class="arrow"> <div id="rel_'+relId+'value" class="relation-input">'+value+'</div> </div> <div class="node-to-relate w-col w-col-4 w-col-small-4 w-col-tiny-4"> <div id="rel_'+relId+'NodeB" class="node-text">'+relNodeB.text.name+'</div> </div> </div> </div> </div> </div> </div> </div>';
+		divToAppend += '<div id="'+parent_div+'" class="relation-parent-box"> <div class="relation-parent-header"> <div id="parent_text_div" class="relation-parent-header-title">'+parent.text.name+'</div> </div> <div class="relation-box"> <div class="relation-edit-container"> <img data-relId="rel_'+relId+'" onclick="editRelation(this.getAttribute(\'data-relId\'))" src="images/editBtn.svg" class="relation-edit-icon"> <img data-relId="rel_'+relId+'" onclick="deleteRelation(this.getAttribute(\'data-relId\'))" src="images/deleteBtn.svg" class="relation-edit-icon"> </div> <div class="relation"> <div class="relation-visual-container"> <div class="relation-visual"> <div id="'+nodeA_div+'" class="relation-a-text">'+relNodeA.text.name+'</div> </div> <img src="images/arrow.svg" width="20"> <div class="relation-visual"> <div id="'+nodeB_div+'"class="relation-a-text">'+relNodeB.text.name+'</div> </div> </div> <div id="'+rel_value_div+'" class="relation-value">'+value+'</div> </div> </div> </div>';
 
-		relationsDiv.append(div);	
+		relationsDiv.append(divToAppend);	
 	}
 	
 	//evaluate weights

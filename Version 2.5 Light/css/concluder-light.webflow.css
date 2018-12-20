@@ -551,10 +551,15 @@
 }
 
 .relations-screen {
-  display: none;
-  width: 95%;
-  height: 95%;
-  margin-top: 1%;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100vw;
+  height: 100vh;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
   -ms-flex-pack: center;
@@ -563,8 +568,6 @@
   -webkit-align-items: center;
   -ms-flex-align: center;
   align-items: center;
-  border: 3px solid #436d8a;
-  background-color: rgba(39, 39, 39, .73);
 }
 
 .relations-tab-bg {
@@ -595,8 +598,7 @@
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  margin-top: 6px;
-  margin-bottom: 6px;
+  margin: 7px;
   padding: 7px;
   -webkit-box-orient: horizontal;
   -webkit-box-direction: normal;
@@ -672,7 +674,6 @@
 
 .relation-parent-box {
   margin: 5px;
-  padding: 5px;
   border: 1px solid #436d8a;
 }
 
@@ -802,6 +803,12 @@
   border-radius: 6px;
   background-color: rgba(67, 109, 138, .64);
   line-height: 20px;
+}
+
+.relations-screen-bg {
+  display: inline-block;
+  border: 3px solid #436d8a;
+  background-color: rgba(39, 39, 39, .73);
 }
 
 @media (max-width: 991px) {

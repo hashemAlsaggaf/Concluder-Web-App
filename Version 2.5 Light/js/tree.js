@@ -34,7 +34,6 @@ var analyzeNodeBtn = $('#analyzeNodeBtn');
 var relateNodeBtn = $('#relateNodeBtn');
 var raltionMode = false;
 
-
 function showNodeMenu(event){
 		var x = event.pageX;
 		var y = event.pageY;
@@ -114,7 +113,6 @@ var treeConfig = {
     }
 };
 
-
 var Tree = $.extend(true, {}, treeConfig);//a clone of treeConfig
 
 var root = Tree.nodeStructure;
@@ -178,7 +176,6 @@ function addNode(target, name, desc){
 	console.log(map);
 	
 }
-
 
 /*
 	assembleNode()
@@ -247,6 +244,7 @@ function deleteNode(id){
 	console.log(map);
 
 }
+
 /*
 	Edit a node name
 	input:
